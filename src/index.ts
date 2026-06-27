@@ -4,6 +4,10 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db";
 
+// Route
+import authRoute from './modules/auth/route'
+
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -17,6 +21,12 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+// Routes
+app.use('/api/auth', authRoute);
+
+app.post('/test', (req, res) => {   // ← taruh di sini
+  res.json({ success: true, message: 'Test berhasil!' });
+});
 
 app.get("/", (_, res) => {
   res.send("API Backend Berjalan");

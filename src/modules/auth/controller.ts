@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { successResponse, errorResponse } from "../../utils/response";
-import { registerService, loginService } from "./service";
+import { registerService, loginService, getMeService } from "./service";
+import { AuthRequest } from "../../middleware/authMiddleware";
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -51,5 +52,27 @@ export const logout = async (req: Request, res: Response) => {
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
   });
-  return successResponse(res, 200, "Logout Berhasil")
+  return successResponse(res, 200, "Logout Berhasil");
+};
+
+export const getMe = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      return errorResponse(res, 401, "Unauthorized");
+    }
+
+    const user = await getMeService(userId);
+    if (!user) {
+      return errorResponse(res, 404, "User tidak ditemukan");
+    }
+
+    return successResponse(res, 200, "Berhasil", {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    });
+  } catch (error) {
+    return errorResponse(res, 400, (error as Error).message);
+  }
 };

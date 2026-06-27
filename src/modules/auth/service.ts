@@ -1,6 +1,7 @@
 import User from "../user/model";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken'
+import { IUser } from "../user/model";
 
 export const registerService = async (username : string, email: string, password: string) => {
     const existingUser = await User.findOne({email})
@@ -37,3 +38,7 @@ export const loginService = async (email : string, password : string) => {
     return {user, token}
 }
 
+export const getMeService = async (userId : string) : Promise<IUser | null>=> {
+    const user = await User.findById(userId).select("-password")
+    return user
+}
