@@ -7,6 +7,7 @@ import connectDB from "./config/db";
 // Route
 import authRoute from './modules/auth/route'
 import cryptoRoute from './modules/crypto/route'
+import favoriteRoute from './modules/favorite/route'
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,6 +26,7 @@ app.use(cookieParser());
 // Routes
 app.use('/api/auth', authRoute);
 app.use('/api/crypto', cryptoRoute)
+app.use('/api/favorite', favoriteRoute)
 
 app.get("/", (_, res) => {
   res.send("API Backend Berjalan");
