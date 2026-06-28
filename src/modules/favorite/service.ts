@@ -12,7 +12,7 @@ export const addFavoriteService = async (userId : string ,coinId : string) => {
     return favorite
 }
 
-export const getCoinListFavorite = async (userId : string) => {
+export const getCoinListFavoriteService = async (userId : string) => {
     const coins = await Favorite.find({userId})
     return coins
 }
